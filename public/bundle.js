@@ -31915,6 +31915,10 @@ var _react = __webpack_require__(90);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _propTypes = __webpack_require__(523);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
 var _ArticleList = __webpack_require__(521);
 
 var _ArticleList2 = _interopRequireDefault(_ArticleList);
@@ -31945,6 +31949,13 @@ var App = function (_React$Component) {
   }
 
   _createClass(App, [{
+    key: 'getChildContext',
+    value: function getChildContext() {
+      return {
+        store: this.props.store
+      };
+    }
+  }, {
     key: 'render',
     value: function render() {
       return _react2.default.createElement(
@@ -31961,6 +31972,9 @@ var App = function (_React$Component) {
   return App;
 }(_react2.default.Component);
 
+App.childContextTypes = {
+  store: _propTypes2.default.object
+};
 exports.default = App;
 
 /***/ }),
@@ -31991,8 +32005,7 @@ var ArticleList = function ArticleList(props) {
     Object.values(props.articles).map(function (article) {
       return _react2.default.createElement(_Article2.default, {
         key: article.id,
-        article: article,
-        store: props.store
+        article: article
       });
     })
   );
@@ -32046,9 +32059,9 @@ var styles = {
   }
 };
 
-var Article = function Article(props) {
-  var article = props.article,
-      store = props.store;
+var Article = function Article(props, _ref) {
+  var store = _ref.store;
+  var article = props.article;
 
   var author = store.lookupAuthor(article.authorId);
   return _react2.default.createElement(
@@ -32093,6 +32106,10 @@ Article.PropTypes = {
   article: _propTypes2.default.shape({
     date: _propTypes2.default.string.isRequired
   })
+};
+
+Article.contextTypes = {
+  store: _propTypes2.default.object
 };
 
 exports.default = Article;
