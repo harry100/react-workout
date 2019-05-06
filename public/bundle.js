@@ -32162,9 +32162,8 @@ var styles = {
 
 var Article = function Article(props) {
   var article = props.article,
-      store = props.store;
+      author = props.author;
 
-  var author = store.lookupAuthor(article.authorId);
   return _react2.default.createElement(
     'div',
     { style: styles.article },
@@ -32209,7 +32208,13 @@ Article.PropTypes = {
   })
 };
 
-exports.default = (0, _storeProvider2.default)(Article);
+function extraProps(store, originalProps) {
+  return {
+    author: store.lookupAuthor(originalProps.article.authorId)
+  };
+}
+
+exports.default = (0, _storeProvider2.default)(extraProps)(Article);
 
 /***/ }),
 /* 525 */
@@ -32242,39 +32247,42 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var storeProvider = function storeProvider(Component) {
-  var _class, _temp;
+var storeProvider = function storeProvider(extraProps) {
+  return function (Component) {
+    var _class, _temp;
 
-  return _temp = _class = function (_React$Component) {
-    _inherits(_class, _React$Component);
+    return _temp = _class = function (_React$Component) {
+      _inherits(_class, _React$Component);
 
-    function _class() {
-      _classCallCheck(this, _class);
+      function _class() {
+        _classCallCheck(this, _class);
 
-      return _possibleConstructorReturn(this, (_class.__proto__ || Object.getPrototypeOf(_class)).apply(this, arguments));
-    }
-
-    _createClass(_class, [{
-      key: 'render',
-      value: function render() {
-        return _react2.default.createElement(Component, _extends({}, this.props, { store: this.context.store }));
+        return _possibleConstructorReturn(this, (_class.__proto__ || Object.getPrototypeOf(_class)).apply(this, arguments));
       }
-    }]);
 
-    return _class;
-  }(_react2.default.Component), _class.displayName = Component.name + 'Container', _class.contextTypes = {
-    store: _propTypes2.default.object
-  }, _temp;
-  // const WithStore = ( props, { store }) =>
-  //   <Component {...props} store={store} />;
+      _createClass(_class, [{
+        key: 'render',
+        value: function render() {
+          return _react2.default.createElement(Component, _extends({}, this.props, extraProps(this.context.store, this.props), {
+            store: this.context.store }));
+        }
+      }]);
 
-  // WithStore.contextTypes = {
-  //   store: PropTypes.object,
-  // };
+      return _class;
+    }(_react2.default.Component), _class.displayName = Component.name + 'Container', _class.contextTypes = {
+      store: _propTypes2.default.object
+    }, _temp;
+    // const WithStore = ( props, { store }) =>
+    //   <Component {...props} store={store} />;
 
-  // WithStore.displayName = `${Component.name}Container`;
+    // WithStore.contextTypes = {
+    //   store: PropTypes.object,
+    // };
 
-  // return WithStore;
+    // WithStore.displayName = `${Component.name}Container`;
+
+    // return WithStore;
+  };
 };
 
 exports.default = storeProvider;
