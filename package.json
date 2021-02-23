@@ -42,7 +42,7 @@
     "lodash.pickby": "^4.6.0",
     "pm2": "^2.5.0",
     "prop-types": "^15.7.2",
-    "react": "^15.6.1",
+    "react": "^15.7.0",
     "react-addons-perf": "^15.4.2",
     "react-dom": "^15.6.1",
     "webpack": "^3.0.0"
